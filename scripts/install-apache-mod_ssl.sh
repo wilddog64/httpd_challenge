@@ -26,9 +26,24 @@ function install_modssl() {
     fi
 }
 
+
+function install_perl() {
+    rpm -qa perl 2>&1 > /dev/null | grep perl
+    if [[ $? == 1 ]]; then
+        yum install perl -y
+        if [[ $? != 0 ]]; then
+            echo error installing perl package
+            exit -1
+        fi
+    else
+        echo apache-httpd already installed
+    fi
+}
+
 main() {
     install_apache
     install_modssl
+    install_perl
 }
 
 # --- execution part ----
