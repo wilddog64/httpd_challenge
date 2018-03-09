@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -xv
 
 function install_apache() {
     rpm -qa httpd | grep httpd
@@ -40,10 +40,27 @@ function install_perl() {
     fi
 }
 
+function update_document_root() {
+    docRoot='/apps/hello-http/html'
+    if [[ ! -e $docRoot ]]; then
+        mkdir -p $docRoot
+    fi
+    # inline update DocumentRoot
+    perl -i~ -ple 's/(DocumentRoot) ".*"/$1 "\/apps\/hello-http\/html"/g if /\/var\/www\/html/ && /DocumentRoot/' /etc/httpd/conf/httpd.conf
+    grep '\/apps\/hello-http\/html' /etc/httpd/conf/httpd.conf > /dev/null 2>&1
+    if [[ $? == 0 ]]; then
+        echo DocumentRoot successfully updated
+    else
+        echo failed to update DocumentRoot
+        exit -1
+    fi
+}
+
 main() {
     install_apache
     install_modssl
     install_perl
+    update_document_root
 }
 
 # --- execution part ----
