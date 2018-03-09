@@ -1,8 +1,10 @@
 #!/bin/bash
 
 function install_apache() {
-    if [[ $(rpm -qa httpd 2>&1 > /dev/null | grep httpd) == 0 ]]; then
-        if [[ $(yum install httpd -y) != 0 ]]; then
+    rpm -qa httpd | grep httpd
+    if [[ $? == 1 ]]; then
+        yum install httpd -y
+        if [[ $? != 0 ]]; then
             echo error installing apache-httpd package
             exit -1
         fi
@@ -12,9 +14,10 @@ function install_apache() {
 }
 
 function install_modssl() {
-    if [[ $(rpm -qa mod_ssl 2>&1 > /dev/null | grep mod_ssl) == 0 ]]; then
+    rpm -qa mod_ssl 2>&1 > /dev/null | grep mod_ssl
+    if [[ $? == 1 ]]; then
         yum install mod_ssl -y
-        if [[ $(yum install mod_ssl -y) != 0 ]]; then
+        if [[ $? != 0 ]]; then
             echo error installing mod_ssl package
             exit -1
         fi
