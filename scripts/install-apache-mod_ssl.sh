@@ -90,8 +90,13 @@ function install_policycoreutils_python() {
 }
 
 function apply_selinux_policy() {
-    semanage fcontext -a -t httpd_sys_content_t '/apps(/.*)'
-    restorecon -Rv /apps
+    ls -lZ /apps | grep 'unconfined_u:object_r:httpd_sys_content_t:s0'
+    if [[ $? != 0 ]]; then
+        semanage fcontext -a -t httpd_sys_content_t '/apps(/.*)'
+        restorecon -Rv /apps
+    else
+        echo httpd_sys_content_d already applied, skip
+    fi
 }
 
 main() {
