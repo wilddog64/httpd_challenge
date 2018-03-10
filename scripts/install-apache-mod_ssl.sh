@@ -128,12 +128,12 @@ function install_nmap_ncat() {
 }
 
 function check_port443_listening() {
-    nc localhost 443 < /dev/null > /dev/null && echo 'yes'
+    nc localhost 443 < /dev/null > /dev/null && echo 'yes, port 443 is listening, you rock!'
     if [[ $? != 0 ]]; then
         echo port 443 is not listening
         exit -1
     else
-        echo port 443 work, you rock!
+        echo cool
     fi
 }
 
