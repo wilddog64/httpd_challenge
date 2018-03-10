@@ -71,6 +71,7 @@ function deploy_indexhtml() {
     fi
     if [[ ! -e $docRoot/index.html ]]; then
         cp /vagrant/files/index.html $docRoot/index.html
+        chown -R apache.apache $docRoot
     else
         echo $docRoot/index.html deployed already, skip
     fi
