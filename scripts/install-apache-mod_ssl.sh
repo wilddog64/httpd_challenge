@@ -81,7 +81,6 @@ function install_policycoreutils_python() {
 }
 
 function apply_selinux_policy() {
-    install_policycoreutils_python
     semanage fcontext -a -t httpd_sys_content_t '/apps(/.*)'
     restorecon -Rv /apps
 }
@@ -89,12 +88,12 @@ function apply_selinux_policy() {
 main() {
     install_apache
     install_modssl
+    install_policycoreutils_python
     remove_welcome_conf
     deploy_ssl_configs
     deploy_selfsigned_certs
     deploy_indexhtml
     apply_selinux_policy
-
 }
 
 # --- execution part ----
