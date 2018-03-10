@@ -77,7 +77,16 @@ function deploy_indexhtml() {
 }
 
 function install_policycoreutils_python() {
-    yum install -y policycoreutils-python
+    rpm -qa policycoreutils-python | grep install_policycoreutils_python
+    if [[ $? == 1 ]]; then
+        yum install -y policycoreutils-python
+        if [[ $? != 0 ]]; then
+            echo error installing policycoreutils-python package
+            exit -1
+        fi
+    else
+        echo policycoreutils-python already installed
+    fi
 }
 
 function apply_selinux_policy() {
