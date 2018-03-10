@@ -27,18 +27,6 @@ function install_modssl() {
 }
 
 
-function install_perl() {
-    rpm -qa perl 2>&1 > /dev/null | grep perl
-    if [[ $? == 1 ]]; then
-        yum install perl -y
-        if [[ $? != 0 ]]; then
-            echo error installing perl package
-            exit -1
-        fi
-    else
-        echo apache-httpd already installed
-    fi
-}
 
 function update_document_root() {
     docRoot='/apps/hello-http/html'
@@ -82,7 +70,6 @@ function deploy_ssl_configs() {
 main() {
     install_apache
     install_modssl
-    install_perl
     update_document_root
     remove_welcome_conf
     deploy_ssl_configs
