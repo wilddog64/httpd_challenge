@@ -113,10 +113,25 @@ function start_httpd_service() {
         echo httpd already started, skip
     fi
 }
+
+function install_nmap_ncat() {
+    rpm -qa nmap-ncat | grep nmap-ncat
+    if [[ $? != 0 ]]; then
+        yum install nmap-ncat -y
+        if [[ $? != 0 ]]; then
+            echo unable to install nmap-ncat
+            exit -1
+        fi
+    else
+        echo nmap-ncat already installed, skip
+    fi
+}
+
 main() {
     install_apache
     install_modssl
     install_policycoreutils_python
+    install_nmap_ncat
     remove_welcome_conf
     deploy_ssl_configs
     deploy_selfsigned_certs
