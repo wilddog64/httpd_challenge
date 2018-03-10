@@ -76,6 +76,15 @@ function deploy_indexhtml() {
     fi
 }
 
+function install_policycoreutils_python() {
+    yum install -y policycoreutils-python
+}
+
+function apply_selinux_policy() {
+    install_policycoreutils_python
+    semanage fcontext -a -t httpd_sys_content_t '/apps(/.*)'
+    restorecon -Rv /apps
+}
 
 main() {
     install_apache
@@ -84,6 +93,8 @@ main() {
     deploy_ssl_configs
     deploy_selfsigned_certs
     deploy_indexhtml
+    apply_selinux_policy
+
 }
 
 # --- execution part ----
