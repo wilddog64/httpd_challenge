@@ -137,6 +137,17 @@ function check_port443_listening() {
     fi
 }
 
+function check_httpd_return_200() {
+    return_ok=$(curl -f -s -k -w "%{http_code}" -o /tmp/result.html https://localhost | grep 200)
+    if [[ $? == 0 ]]; then
+        echo we got it
+        cat /tmp/result.html
+    else
+        echo something wrong, exiting
+        exit -1
+    fi
+}
+
 main() {
     install_apache
     install_modssl
@@ -149,6 +160,7 @@ main() {
     apply_selinux_policy
     start_httpd_service
     check_port443_listening
+    check_httpd_return_200
 }
 
 # --- execution part ----
