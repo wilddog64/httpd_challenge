@@ -92,7 +92,7 @@ This function first check to see if DocumentRoot has selinux attributes existed,
 
 If everything above works well, then it is the time to start httpd service. Function ```start_httpd_service``` serves the purpose. This function will first check if httpd service running, if not then start it.
 
-If for any reason this function fails to start httpd service, it will can ```systemctl status httpd.service``` to display more information.
+If for any reason this function fails to start httpd service, it will executes ```systemctl status httpd.service``` to display more information.
 
 ### Check SSL Port Is Listening, Pages Serve, And Good Http Status
 
