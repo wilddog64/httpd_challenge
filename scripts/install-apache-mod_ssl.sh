@@ -1,5 +1,27 @@
 #!/bin/bash -xv
+# ################################################ #
+# install-apache-mod_ssl                           #
+# install and configure apache along with SSL      #
+#                                                  #
+# This script will do the followings,              #
+#                                                  #
+# * intall apache 2.x annd mod_ssl if these        #
+#   packages are not already installed             #
+# * configure apache to use ssl by providing       #
+#   self-signed certs                              #
+# * change DocumentRoot to /apps/hello-http/html   #
+# * change log directory to /var/log/weblogs/http  #
+# * change DirectoryIndex to hello.html            #
+# * copy hello.html to DocumentRoot                #
+# * start httpd service and verify its success     #
+# * check port 443 is listening                    #
+# * ensure page loaded and http status code is 200 #
+#                                                  #
+# ################################################ #
 
+# install_apache function installs apache httpd if it
+# is not already existed. The function exit with -1 if
+# it encouter any error during package installation
 function install_apache() {
     rpm -qa httpd | grep httpd
     if [[ $? == 1 ]]; then
@@ -13,6 +35,9 @@ function install_apache() {
     fi
 }
 
+# install_modssl function installs apache httpd if it
+# is not already existed. The function exit with -1 if
+# it encouter any error during package installation
 function install_modssl() {
     rpm -qa mod_ssl 2>&1 > /dev/null | grep mod_ssl
     if [[ $? == 1 ]]; then
@@ -26,6 +51,8 @@ function install_modssl() {
     fi
 }
 
+# remove_welcome_conf function remove a default 
+# /etc/httpd/conf.d/welcom.conf
 function remove_welcome_conf() {
     if [[ -e /etc/httpd/conf.d/welcome.conf ]]; then
         rm -vf /etc/httpd/conf.d/welcome.conf
@@ -34,6 +61,11 @@ function remove_welcome_conf() {
     fi
 }
 
+# deploy_ssl_configs function deploy pre-configure apache configuration to
+# their proper location. The configuratin contains new values for,
+#  * DocumentRoot 
+#  * certs location
+#  * DirectoryIndex
 function deploy_ssl_configs() {
     diff -q /vagrant/files/httpd/httpd.conf /etc/httpd/conf/httpd.conf > /dev/null 2>&1
     if [[ $? != 0 ]]; then
@@ -50,6 +82,9 @@ function deploy_ssl_configs() {
     fi
 }
 
+# deploy_selfsigned_certs function copy self-signed certs to proper location
+# refers to this https://wiki.centos.org/HowTos/Https for how to create a
+# self-signed certicate
 function deploy_selfsigned_certs() {
     if [[ ! -e /etc/pki/tls/certs/server.crt ]]; then
         cp /vagrant/files/certs/server.crt /etc/pki/tls/certs/server.crt
@@ -64,6 +99,7 @@ function deploy_selfsigned_certs() {
     fi
 }
 
+# deploy_indexhtml function copy hello.html
 function deploy_indexhtml() {
     docRoot='/apps/hello-http/html'
     if [[ ! -e $docRoot ]]; then
@@ -77,6 +113,8 @@ function deploy_indexhtml() {
     fi
 }
 
+# install_policycoreutils_python function install selinux python
+# tools for manging apache selinux configuration
 function install_policycoreutils_python() {
     rpm -qa policycoreutils-python | grep install_policycoreutils_python
     if [[ $? == 1 ]]; then
@@ -90,6 +128,8 @@ function install_policycoreutils_python() {
     fi
 }
 
+# apply_selinux_policy function create and apply selinux policy
+# for DocumentRoot other than default location
 function apply_selinux_policy() {
     ls -lZ /apps | grep 'unconfined_u:object_r:httpd_sys_content_t:s0'
     if [[ $? != 0 ]]; then
@@ -100,6 +140,9 @@ function apply_selinux_policy() {
     fi
 }
 
+# start_httpd_service function start httpd service if it not
+# started already. When service fails to start, it will display
+# service status to help debugging the problems
 function start_httpd_service() {
     ps aux | grep '[h]ttpd'
     if [[ $? != 0 ]]; then
@@ -114,6 +157,8 @@ function start_httpd_service() {
     fi
 }
 
+# install_nmap_ncat function install nmap-ncat utility
+# in order to test if port 443 is open and listening
 function install_nmap_ncat() {
     rpm -qa nmap-ncat | grep nmap-ncat
     if [[ $? != 0 ]]; then
@@ -127,6 +172,9 @@ function install_nmap_ncat() {
     fi
 }
 
+# check_port443_listening function will check if port
+# 443 is listening; it will bail out the script if 443
+# is not listening
 function check_port443_listening() {
     nc localhost 443 < /dev/null > /dev/null && echo 'yes, port 443 is listening, you rock!'
     if [[ $? != 0 ]]; then
@@ -148,6 +196,8 @@ function check_httpd_return_200() {
     fi
 }
 
+# relocate_http_log function move default httpd log directory
+# to new location, and relink the /etc/httpd/logs to the new one
 function relocate_http_log() {
     if [[ ! -e /var/log/weblogs/http ]]; then
         mkdir -p /var/log/weblogs
@@ -165,6 +215,7 @@ function relocate_http_log() {
     fi
 }
 
+# this is our main function
 main() {
     install_apache
     install_modssl
