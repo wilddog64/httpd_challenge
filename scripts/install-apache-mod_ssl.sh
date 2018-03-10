@@ -35,13 +35,15 @@ function remove_welcome_conf() {
 }
 
 function deploy_ssl_configs() {
-    if [[ $(diff -q /vagrant/files/httpd/httpd.conf /etc/httpd/conf/httpd.conf > /dev/null 2>&1) != 0 ]]; then
+    diff -q /vagrant/files/httpd/httpd.conf /etc/httpd/conf/httpd.conf > /dev/null 2>&1
+    if [[ $? != 0 ]]; then
         cp /vagrant/files/httpd/httpd.conf /etc/httpd/conf/httpd.conf
     else
         echo httpd.conf copy complete already, skip
     fi
 
-    if [[ $(diff -q /vagrant/files/httpd/ssl.conf /etc/httpd/conf.d/ssl.conf > /dev/null 2>&1) != 0 ]]; then
+    diff -q /vagrant/files/httpd/ssl.conf /etc/httpd/conf.d/ssl.conf > /dev/null 2>&1
+    if [[ $? != 0 ]]; then
         cp /vagrant/files/httpd/ssl.conf /etc/httpd/conf.d/ssl.conf
     else
         echo ssl.conf copy complete already, skip
