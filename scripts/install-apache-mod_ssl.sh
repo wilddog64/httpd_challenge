@@ -148,6 +148,23 @@ function check_httpd_return_200() {
     fi
 }
 
+function relocate_http_log() {
+    if [[ ! -e /var/log/weblogs/http ]]; then
+        mkdir -p /var/log/weblogs
+        mv /var/log/httpd /var/log/weblogs/http
+    else
+        echo directory exist, skip
+    fi
+
+    if [[ -L /etc/httpd/logs ]]; then
+        if [[ -e /etc/httpd/logs ]]; then
+            echo symlink works, skip
+        else
+            ln -s -f /var/log/weblogs/http /etc/httpd/logs
+        fi
+    fi
+}
+
 main() {
     install_apache
     install_modssl
@@ -158,6 +175,7 @@ main() {
     deploy_selfsigned_certs
     deploy_indexhtml
     apply_selinux_policy
+    relocate_http_log
     start_httpd_service
     check_port443_listening
     check_httpd_return_200
