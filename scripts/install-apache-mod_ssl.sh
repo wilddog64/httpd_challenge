@@ -100,6 +100,19 @@ function apply_selinux_policy() {
     fi
 }
 
+function start_httpd_service() {
+    ps aux | grep '[h]ttpd'
+    if [[ $? != 0 ]]; then
+        service httpd start
+        if [[ $? != 0 ]]; then
+            echo fail to start httpd service
+            systemctl status httpd.service
+            exit -1
+        fi
+    else
+        echo httpd already started, skip
+    fi
+}
 main() {
     install_apache
     install_modssl
@@ -109,6 +122,7 @@ main() {
     deploy_selfsigned_certs
     deploy_indexhtml
     apply_selinux_policy
+    start_httpd_service
 }
 
 # --- execution part ----
