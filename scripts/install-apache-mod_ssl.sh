@@ -26,24 +26,6 @@ function install_modssl() {
     fi
 }
 
-
-
-function update_document_root() {
-    docRoot='/apps/hello-http/html'
-    if [[ ! -e $docRoot ]]; then
-        mkdir -p $docRoot
-    fi
-    # inline update DocumentRoot
-    perl -i~ -ple 's/(DocumentRoot) ".*"/$1 "\/apps\/hello-http\/html"/g if /\/var\/www\/html/ && /DocumentRoot/' /etc/httpd/conf/httpd.conf
-    grep '\/apps\/hello-http\/html' /etc/httpd/conf/httpd.conf > /dev/null 2>&1
-    if [[ $? == 0 ]]; then
-        echo DocumentRoot successfully updated
-    else
-        echo failed to update DocumentRoot
-        exit -1
-    fi
-}
-
 function remove_welcome_conf() {
     if [[ -e /etc/httpd/conf.d/welcome.conf ]]; then
         rm -vf /etc/httpd/conf.d/welcome.conf
@@ -70,7 +52,6 @@ function deploy_ssl_configs() {
 main() {
     install_apache
     install_modssl
-    update_document_root
     remove_welcome_conf
     deploy_ssl_configs
 }
