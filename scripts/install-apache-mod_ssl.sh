@@ -56,11 +56,36 @@ function update_document_root() {
     fi
 }
 
+function remove_welcome_conf() {
+    if [[ -e /etc/httpd/conf.d/welcome.conf ]]; then
+        rm -vf /etc/httpd/conf.d/welcome.conf
+    else
+        echo /etc/httpd/conf.d/welcome.conf removed already, skip
+    fi
+}
+
+function deploy_ssl_configs() {
+    if [[ $(diff -q /vagrant/files/httpd/httpd.conf /etc/httpd/conf/httpd.conf > /dev/null 2>&1) != 0 ]]; then
+        cp /vagrant/files/httpd/httpd.conf /etc/httpd/conf/httpd.conf
+    else
+        echo httpd.conf copy complete already, skip
+    fi
+
+    if [[ $(diff -q /vagrant/files/httpd/ssl.conf /etc/httpd/conf.d/ssl.conf > /dev/null 2>&1) != 0 ]]; then
+        cp /vagrant/files/httpd/ssl.conf /etc/httpd/conf.d/ssl.conf
+    else
+        echo ssl.conf copy complete already, skip
+    fi
+
+}
+
 main() {
     install_apache
     install_modssl
     install_perl
     update_document_root
+    remove_welcome_conf
+    deploy_ssl_configs
 }
 
 # --- execution part ----
