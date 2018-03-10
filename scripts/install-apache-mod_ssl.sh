@@ -48,7 +48,6 @@ function deploy_ssl_configs() {
     else
         echo ssl.conf copy complete already, skip
     fi
-
 }
 
 main() {
