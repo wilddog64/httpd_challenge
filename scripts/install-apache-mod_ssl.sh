@@ -50,11 +50,26 @@ function deploy_ssl_configs() {
     fi
 }
 
+function deploy_selfsigned_certs() {
+    if [[ ! -e /etc/pki/tls/certs/server.crt ]]; then
+        cp /vagrant/files/certs/server.crt /etc/pki/tls/certs/server.crt
+    else
+        echo server.crt deployed already, skip
+    fi
+
+    if [[ ! -e /etc/pki/tls/private/server.key ]]; then
+        cp /vagrant/files/certs/server.key /etc/pki/tls/private/server.key
+    else
+        echo server.key deployed already, skip
+    fi
+}
+
 main() {
     install_apache
     install_modssl
     remove_welcome_conf
     deploy_ssl_configs
+    deploy_selfsigned_certs
 }
 
 # --- execution part ----
