@@ -127,6 +127,16 @@ function install_nmap_ncat() {
     fi
 }
 
+function check_port443_listening() {
+    nc localhost 443 < /dev/null > /dev/null && echo 'yes'
+    if [[ $? != 0 ]]; then
+        echo port 443 is not listening
+        exit -1
+    else
+        echo port 443 work, you rock!
+    fi
+}
+
 main() {
     install_apache
     install_modssl
@@ -138,6 +148,7 @@ main() {
     deploy_indexhtml
     apply_selinux_policy
     start_httpd_service
+    check_port443_listening
 }
 
 # --- execution part ----
