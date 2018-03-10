@@ -67,7 +67,7 @@ function deploy_selfsigned_certs() {
 function deploy_indexhtml() {
     docRoot='/apps/hello-http/html'
     if [[ ! -e $docRoot ]]; then
-        mkdir $docRoot
+        mkdir -p $docRoot
     fi
     if [[ ! -e $docRoot/index.html ]]; then
         cp /vagrant/files/index.html $docRoot/index.html
@@ -75,6 +75,7 @@ function deploy_indexhtml() {
         echo $docRoot/index.html deployed already, skip
     fi
 }
+
 
 main() {
     install_apache
