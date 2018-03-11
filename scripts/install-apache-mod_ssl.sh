@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -vx
 # ################################################ #
 # install-apache-mod_ssl                           #
 # install and configure apache along with SSL      #
