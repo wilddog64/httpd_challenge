@@ -1,4 +1,4 @@
-#!/bin/bash -xv
+#!/bin/bash
 # ################################################ #
 # install-apache-mod_ssl                           #
 # install and configure apache along with SSL      #
@@ -215,6 +215,10 @@ function relocate_http_log() {
     fi
 }
 
+function display_last_10lines_accesslog() {
+    tail -10 /var/log/weblogs/http/ssl_access_log
+}
+
 # this is our main function
 main() {
     install_apache
@@ -230,6 +234,7 @@ main() {
     start_httpd_service
     check_port443_listening
     check_httpd_return_200
+    display_last_10lines_accesslog
 }
 
 # --- execution part ----
