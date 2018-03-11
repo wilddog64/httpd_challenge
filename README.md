@@ -105,6 +105,12 @@ These are done by the following functions
 
     check_port443_listening
     check_httpd_return_200
+
+### Display Last 10 Lines Of Access From /var/log/weblogs/http/ssl_access_log
+Finally we should the more recent 10 access from the log. This is done by this function
+
+    display_last_10lines_accesslog
+
 ## Project Directory Structure
     .
     ├── README.md
