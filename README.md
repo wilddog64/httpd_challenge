@@ -82,7 +82,7 @@ functions:
 are used to handle these requirements
 
 ### Apply selinux Policy To A New DocumentRoot
-CentOS has selinux in order to secure the operation system. By default Apache configure RootDocument to /var/www directory. Any new DocumentRoot outside this context will not work due to selinux policy. We have to apply proper selinux policy to our new root in order for Apache to serve. This function serves the purpose
+CentOS has selinux in order to secure the operation system. By default Apache configure DocumentRoot to /var/www directory. Any new DocumentRoot outside this context will not work due to selinux policy. We have to apply proper selinux policy to our new root in order for Apache to serve. This function serves the purpose
 
     apply_selinux_policy
 
