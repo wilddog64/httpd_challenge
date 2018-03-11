@@ -88,7 +88,7 @@ CentOS has selinux in order to secure the operation system. By default Apache co
 
 This function first check to see if DocumentRoot has selinux attributes existed, if not, ```semanage``` and ```restorecon``` will be called to apply a proper policy
 
-### Start Httpd service
+### Start Httpd Service
 
 If everything above works well, then it is the time to start httpd service. Function ```start_httpd_service``` serves the purpose. This function will first check if httpd service running, if not then start it.
 
