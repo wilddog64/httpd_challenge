@@ -1,4 +1,5 @@
 # HTTP Challenge Assigment
+
 This assignment try to accomplish following requirments
 
 * Deploy standard Centos 7 base image
@@ -12,15 +13,18 @@ This assignment try to accomplish following requirments
 * Use regular script languages rather configuration management tools such as Puppet, Chef, or Ansible
 
 ## Script Use
+
 Bash shell script language is choosen for the simpilcity
 
 ## Provision Tools
+
 This assignment use Vagrant and virtualbox to provision CentOS Operating System, in order for anyone to run it, Vagranthas to be installed. If you are on
 
 * Mac - brew cask install vagrant virtualbox
 * Other plaforms - [Vagrant Download](https://www.vagrantup.com/downloads.html), [VirtualBox Download](https://www.virtualbox.org/wiki/Downloads)
 
 ### Optional
+
 If you want to save time by running only one command repeatly testing vagrant box provision, you can install a ```vagrant-pristine``` plugin by ```vagrant plugin install vagrant-pristine```
 
 ## Execute Provision Script
