@@ -18,7 +18,7 @@ Bash shell script language is choosen for the simpilcity
 This assignment use Vagrant and virtualbox to provision CentOS Operating System, in order for anyone to run it, Vagranthas to be installed. If you are on
 
 * Mac - brew cask install vagrant virtualbox
-* Other plaforms - [Vagrant Download](https://www.vagrantup.com/downloads.html), [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
+* Other plaforms - [Vagrant Download](https://www.vagrantup.com/downloads.html), [VirtualBox Download](https://www.virtualbox.org/wiki/Downloads)
 
 ### Optional
 If you want to save time by running only one command repeatly testing vagrant box provision, you can install a ```vagrant-pristine``` plugin by ```vagrant plugin install vagrant-pristine```
@@ -88,7 +88,7 @@ CentOS has selinux in order to secure the operation system. By default Apache co
 
 This function first check to see if DocumentRoot has selinux attributes existed, if not, ```semanage``` and ```restorecon``` will be called to apply a proper policy
 
-### Start Httpd Service
+### Start Httpd service
 
 If everything above works well, then it is the time to start httpd service. Function ```start_httpd_service``` serves the purpose. This function will first check if httpd service running, if not then start it.
 
@@ -105,12 +105,6 @@ These are done by the following functions
 
     check_port443_listening
     check_httpd_return_200
-
-### Display Last 10 Lines Of Access From /var/log/weblogs/http/ssl_access_log
-Finally we should the more recent 10 access from the log. This is done by this function
-
-    display_last_10lines_accesslog
-
 ## Project Directory Structure
     .
     ├── README.md
