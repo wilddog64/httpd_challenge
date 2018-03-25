@@ -10,7 +10,7 @@ This assignment try to accomplish following requirments
 * Place Apache log in /var/log/weblogs/http
 * After script successfully deploys the application, verify apache load the page and http status is 200
 * The caller to the script should be able to determine if script execute successfully or fail
-* Use regular script languages rather configuration management tools such as Puppet, Chef, or Ansible
+* Use regular script languages rather than configuration management tools such as Puppet, Chef, or Ansible
 
 ## Script Use
 
